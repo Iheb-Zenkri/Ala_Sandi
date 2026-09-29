@@ -1,0 +1,188 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clients - Hotel Agenda</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f4f6;color:#111827;font-family:Arial,sans-serif}header{background:#111827;color:white;padding:20px}h1{margin:0}main{max-width:760px;margin:auto;padding:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card,.box,.form{background:white;border:1px solid #ddd;border-radius:18px;padding:16px}.card{min-height:150px;cursor:pointer}.name{font-size:20px;font-weight:bold;margin:8px 0}.muted{color:#687386;font-size:13px}.btn{width:100%;padding:14px;margin-top:12px;border:0;border-radius:13px;background:#111827;color:white;font-size:16px}.small{padding:9px;border:1px solid #ddd;background:white;border-radius:10px}.actions{display:flex;gap:7px;margin-top:10px}.actions>*{flex:1}.month{display:flex;justify-content:space-between;align-items:center;margin:15px 0}.month button{width:55px;height:55px;border:1px solid #ddd;background:white;border-radius:15px;font-size:28px}.week,.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.week div{text-align:center;color:#687386;font-size:12px}.day{height:58px;border:2px solid #ddd;border-radius:13px;background:white;display:flex;align-items:center;justify-content:center;font-weight:bold}.day.sel{background:#18b957;color:white;border-color:#18b957}.rate{background:white;padding:14px;border-radius:16px;margin-bottom:12px}.rate input,.form input{width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;font-size:16px;margin-top:6px} 
+.invoice{background:#fff;padding:26px;border-radius:10px;color:#102b4c;box-shadow:0 8px 30px rgba(16,43,76,.08)}
+.invTop{display:flex;justify-content:space-between;gap:28px;align-items:flex-start}
+.invCompany{font-size:16px;line-height:1.38;color:#102b4c}
+.invCompany strong{font-size:30px;letter-spacing:.2px}
+.invBox{border:1.5px solid #7190ad;border-radius:4px;overflow:hidden;min-width:285px;font-size:14px}
+.invBox table{border-collapse:collapse;width:100%}
+.invBox th,.invBox td{border:1px solid #9bb0c3;padding:10px 13px;text-align:center}
+.invBox th{background:#e8f0f7;font-weight:700}
+.clientBox{background:#e9f2f8;border:0;border-radius:7px;padding:16px 22px;margin:24px 0 28px;font-size:16px;line-height:1.42;max-width:58%;color:#102b4c}
+
+.clientBox b{font-size:22px}
+.invTable{width:100%;border-collapse:collapse;margin-top:0;font-size:13px;color:#102b4c}
+.invTable th,.invTable td{border:1px solid #91a9bd;padding:8px;vertical-align:top}
+.invTable th{text-align:center;background:#173e62;color:#fff;font-weight:700}
+.invTable td:nth-child(1),.invTable td:nth-child(3),.invTable td:nth-child(5),.invTable td:nth-child(6),.invTable td:nth-child(7),.invTable td:nth-child(8),.invTable td:nth-child(9){text-align:center}
+.invBottom{display:grid;grid-template-columns:55% 45%;gap:38px;margin-top:26px;align-items:start}
+.vatTable{width:100%;border-collapse:collapse;font-size:14px}
+.vatTable th,.vatTable td{border:1px solid #91a9bd;padding:11px;text-align:center}
+.vatTable th{background:#173e62;color:#fff}
+.invTotal{background:#e9f2f8;border-radius:7px;width:100%;font-size:16px;overflow:hidden}
+.invTotal div{display:flex;justify-content:space-between;padding:7px 16px}
+.invTotal .net{background:#173e62;color:#fff;border-radius:0;font-size:18px;padding:12px 16px;margin:0}
+.signature{margin-top:26px;font-size:15px;color:#102b4c}
+.signature:after{content:"";display:block;width:365px;height:105px;border:1.5px solid #7190ad;border-radius:4px;margin-top:8px}
+@media(max-width:700px){
+ .invoice{padding:14px}.invTop{gap:10px}.invCompany{font-size:9px}.invCompany strong{font-size:18px}
+ .invBox{min-width:145px;font-size:8px}.invBox th,.invBox td{padding:5px}
+ .clientBox{max-width:100%;font-size:11px;margin:13px 0 15px}.clientBox b{font-size:16px}
+ .invTable{font-size:7px}.invTable th,.invTable td{padding:4px}
+ .invBottom{grid-template-columns:55% 45%;gap:8px;margin-top:12px}.vatTable{font-size:7px}.vatTable th,.vatTable td{padding:5px}
+ .invTotal{font-size:8px}.invTotal div{padding:4px 7px}.invTotal .net{font-size:9px;padding:7px}
+ .signature{font-size:8px}.signature:after{width:180px;height:55px}
+}
+ .danger{border-color:#d33!important;color:#c00!important} </style>
+<style>
+@media print {
+  @page { size: A4; margin: 10mm; }
+  body { background:#fff !important; }
+  header, .noPrint, button { display:none !important; }
+  main { max-width:none !important; padding:0 !important; margin:0 !important; }
+  .invoice { box-shadow:none !important; border:0 !important; margin:0 !important; padding:0 !important; }
+}
+</style>
+
+
+
+<style id="final-print">
+@media print{
+ @page{size:A4 portrait;margin:7mm}
+ html,body{background:#fff!important;margin:0!important;padding:0!important}
+ header,.noPrint,button,.small{display:none!important}
+ main{width:196mm!important;max-width:196mm!important;margin:0!important;padding:0!important}
+ .invoice{width:196mm!important;min-height:283mm!important;margin:0!important;padding:5mm!important;box-shadow:none!important;border-radius:0!important}
+ .invCompany{font-size:11pt!important}.invCompany strong{font-size:22pt!important}
+ .invBox{min-width:58mm!important;font-size:9pt!important}
+ .clientBox{font-size:10pt!important;max-width:58%!important}
+ .clientBox b{font-size:15pt!important}
+ .invTable{font-size:8pt!important}.invTable th,.invTable td{padding:2mm!important}
+ .invBottom{grid-template-columns:55% 45%!important;gap:7mm!important}
+ .vatTable{font-size:8pt!important}.vatTable th,.vatTable td{padding:2.5mm!important}
+ .invTotal{font-size:9pt!important}.invTotal .net{font-size:10pt!important}
+ .signature{font-size:9pt!important}.signature:after{width:75mm!important;height:25mm!important}
+}
+</style>
+<style id="final-black-right">
+/* Final requested layout: client box right + invoice black/white */
+.clientBox{margin-left:auto!important;margin-right:0!important;max-width:58%!important;width:58%!important;background:#f2f2f2!important;color:#111!important;border:1px solid #111!important}
+.invBox,.invTable,.vatTable{color:#111!important}
+.invTable th,.vatTable th{background:#111!important;color:#fff!important;border-color:#111!important}
+.invTable td,.vatTable td,.invTable th,.vatTable th{border-color:#111!important}
+.invBox table,.invBox th,.invBox td{border-color:#111!important;color:#111!important}
+.invTotal .net{background:#111!important;color:#fff!important}
+@media(max-width:700px){.clientBox{width:58%!important;max-width:58%!important;margin-left:auto!important;margin-right:0!important}}
+@media print{.clientBox{width:58%!important;max-width:58%!important;margin-left:auto!important;margin-right:0!important}}
+</style>
+
+
+<style id="final-client-siret">
+.clientBox{margin-left:auto!important;margin-right:0!important;width:58%!important;max-width:58%!important;color:#111!important;background:#f4f4f4!important;border:1px solid #ddd!important}
+.clientBox span{display:block;font-size:14px;margin-bottom:2px}
+.clientBox b{display:block;font-size:20px;margin-bottom:4px}
+@media(max-width:700px){.grid[style*="repeat(3,1fr)"]{grid-template-columns:1fr!important}.actions{flex-wrap:wrap}.actions>*{min-width:0}}
+</style>
+</head><body><header><h1>👥 Clients</h1><p>Gestion des clients et des hôtels</p></header><main id="app"></main>
+<script>
+const K="hotel_agenda_clients_first";let D;try{D=JSON.parse(localStorage.getItem(K)||"null")}catch(e){D=null}
+if(!D||!Array.isArray(D.clients))D={clients:[]};if(typeof D.invoiceNext!=="number"||D.invoiceNext<6)D.invoiceNext=6;D.clients.forEach(c=>{if(typeof c.siret!=="string")c.siret=""});let ci=-1,hi=-1,mo=0;const A=document.getElementById("app");
+function save(){localStorage.setItem(K,JSON.stringify(D))}function esc(s){return String(s).replace(/[&<>"']/g,x=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x]))}
+function MI(o=0){let d=new Date();d.setDate(1);d.setMonth(d.getMonth()+o);return{y:d.getFullYear(),m:d.getMonth(),n:d.toLocaleDateString("fr-FR",{month:"long",year:"numeric"}),f:new Date(d.getFullYear(),d.getMonth(),1).getDay(),days:new Date(d.getFullYear(),d.getMonth()+1,0).getDate()}}
+function dates(h,o=0){let x=MI(o),a=[];for(let d=1;d<=x.days;d++)if(h.d[x.y+"-"+x.m+"-"+d])a.push(d);return a}
+function home(){
+ let q=(window.clientSearch||"").toLowerCase().trim();
+ let list=D.clients.map((x,i)=>({x,i})).filter(o=>!q||o.x.name.toLowerCase().includes(q)||o.x.code.toLowerCase().includes(q));
+ let totalHotels=D.clients.reduce((n,c)=>n+c.h.length,0);
+ let totalDays=D.clients.reduce((n,c)=>n+c.h.reduce((z,h)=>z+Object.keys(h.d||{}).length,0),0);
+ let cards=list.map(o=>{
+   let x=o.x,i=o.i;
+   return '<div class="card" onclick="openC('+i+')"><div style="font-size:30px">👤</div><div class="name">'+esc(x.name)+'</div><div class="muted">N° client : '+esc(x.code)+'</div><div class="muted">🏨 '+x.h.length+' hôtel(s)</div><div class="actions"><button class="small" onclick="event.stopPropagation();openC('+i+')">👁 Ouvrir</button><button class="small danger" onclick="event.stopPropagation();deleteC('+i+')">🗑 Supprimer</button></div></div>'
+ }).join("");
+ A.innerHTML='<h2>Mes clients</h2>'+
+ '<div class="grid" style="grid-template-columns:repeat(3,1fr)">'+
+ '<div class="box"><b>👥 Clients</b><div style="font-size:26px;margin-top:6px">'+D.clients.length+'</div></div>'+
+ '<div class="box"><b>🏨 Hôtels</b><div style="font-size:26px;margin-top:6px">'+totalHotels+'</div></div>'+
+ '<div class="box"><b>📅 Jours enregistrés</b><div style="font-size:26px;margin-top:6px">'+totalDays+'</div></div></div>'+
+ '<div class="box" style="margin:12px 0"><input id="clientSearch" placeholder="🔍 Rechercher un client..." value="'+esc(window.clientSearch||"")+'" oninput="window.clientSearch=this.value;home()"></div>'+
+ (cards?'<div class="grid">'+cards+'</div>':'<div class="box">Aucun client trouvé.</div>')+
+ '<button class="btn" onclick="addC()">＋ Ajouter un client</button>'+
+ '<div class="actions"><button class="small" onclick="exportData()">💾 Backup</button><button class="small" onclick="importData()">↩️ Restaurer</button></div>'+
+ '<button class="btn" onclick="invoiceHistory()">🧾 Historique des factures</button>'
+}
+function addC(){let n=prompt("Nom du client :");if(!n)return;let c=prompt("Numéro client :","CL0001");if(!c)return;let siret=prompt("SIRET Client :","");D.clients.push({name:n.trim(),code:c.trim(),siret:(siret||"").trim(),address:"",phone:"",next:1,h:[]});save();home()}
+function deleteC(i){let c=D.clients[i];if(!c)return;if(!confirm("Supprimer le client « "+c.name+" » et toutes ses données ?"))return;D.clients.splice(i,1);save();home()}
+function openC(i){ci=i;mo=0;clientPage()}
+function editC(){let c=D.clients[ci],v=prompt("Nom :",c.name);if(v)c.name=v.trim();v=prompt("Numéro client :",c.code);if(v)c.code=v.trim();v=prompt("SIRET Client :",c.siret||"");if(v!==null)c.siret=v.trim();v=prompt("Adresse :",c.address||"");if(v!==null)c.address=v;v=prompt("Téléphone :",c.phone||"");if(v!==null)c.phone=v;save();clientPage()}
+function clientPage(){let c=D.clients[ci],cards=c.h.map((h,i)=>{let a=dates(h),r=+h.rate||0;return '<div class="card"><div onclick="openH('+i+')"><div style="font-size:28px">🏨</div><div class="name">'+esc(h.name)+'</div><div>💰 '+r.toFixed(2)+' DT / jour</div><div style="margin-top:9px;background:#18b957;color:white;border-radius:9px;padding:7px;display:inline-block">✓ '+a.length+' jours</div><div class="muted">Dates : '+(a.length?a.join(" • "):"Aucune")+'</div><b>Total : '+(a.length*r).toFixed(2)+' DT</b></div><div class="actions"><button class="small" onclick="openH('+i+')">📅 Agenda</button><button class="small" onclick="editH('+i+')">✏️ Modifier</button></div></div>'}).join("");A.innerHTML='<button class="small" onclick="home()">← Clients</button><h2>'+esc(c.name)+'</h2><div class="box"><b>N° client :</b> '+esc(c.code)+'<br><b>SIRET Client :</b> '+esc(c.siret||'Non renseigné')+'<br>'+esc(c.address||'')+' '+esc(c.phone||'')+'<button class="btn" onclick="editC()">✏️ Modifier client</button></div><h2>🏨 Hotels</h2>'+(cards?'<div class="grid">'+cards+'</div>':'<div class="box">Aucun hôtel.</div>')+'<button class="btn" onclick="addH()">＋ Ajouter un hôtel</button><button class="btn" onclick="invSettings()">🧾 Facture client</button>'}
+function addH(){let n=prompt("Nom de l'hôtel :");if(!n)return;let r=prompt("Tarif par jour (DT) :","200");D.clients[ci].h.push({name:n.trim(),rate:+r||0,d:{}});save();clientPage()}
+function editH(i){let h=D.clients[ci].h[i],n=prompt("Nom :",h.name);if(n)h.name=n.trim();let r=prompt("Tarif / jour :",h.rate);if(r!==null&&!isNaN(+r))h.rate=+r;save();clientPage()}
+function openH(i){hi=i;mo=0;agenda()}
+function agenda(){let h=D.clients[ci].h[hi],x=MI(mo),a=dates(h,mo),s='<button class="small" onclick="clientPage()">← '+esc(D.clients[ci].name)+'</button><h2>'+esc(h.name)+'</h2><div class="month"><button onclick="mo--;agenda()">‹</button><b>'+x.n+'</b><button onclick="mo++;agenda()">›</button></div><div class="rate">💰 Tarif / jour<input type="number" value="'+(+h.rate||0)+'" onchange="setR(this.value)"> DT</div><div class="box"><div class="week"><div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div></div><div class="calendar">';let z=(x.f+6)%7;for(let i=0;i<z;i++)s+='<div></div>';for(let d=1;d<=x.days;d++){let k=x.y+"-"+x.m+"-"+d;s+='<div class="day '+(h.d[k]?'sel':'')+'" onclick="tog(&quot;'+k+'&quot;)">'+d+'</div>'}s+='</div><p><b>Jours travaillés : '+a.length+'</b></p><p><b>Total : '+(a.length*(+h.rate||0)).toFixed(2)+' DT</b></p></div>';A.innerHTML=s}
+function tog(k){let h=D.clients[ci].h[hi];if(h.d[k])delete h.d[k];else h.d[k]=1;save();agenda()}function setR(v){D.clients[ci].h[hi].rate=+v||0;save();agenda()}
+function invSettings(){let c=D.clients[ci],d=new Date(),m=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");A.innerHTML='<button class="small" onclick="clientPage()">← Retour</button><div class="form"><h2>🧾 Paramètres</h2><label>Client</label><input value="'+esc(c.name)+'" disabled><label>N° client</label><input value="'+esc(c.code)+'" disabled><label>N° Facture</label><input id="no" value="FA'+String(D.invoiceNext).padStart(4,"0")+'" placeholder="FA0006"><label>Date</label><input id="idate" type="date" value="'+d.toISOString().slice(0,10)+'"><label>Mois</label><input id="imonth" type="month" value="'+m+'"><button class="btn" onclick="invoice()">🧾 Créer</button></div>'}
+function invoice(){
+ let c=D.clients[ci],no=document.getElementById("no").value.trim(),dt=document.getElementById("idate").value,ym=document.getElementById("imonth").value;
+ if(!ym)return;
+ if(!/^FA\d{4,}$/.test(no)){alert("N° Facture invalide. Exemple : FA0006");return;}
+ let manualNum=parseInt(no.slice(2),10);
+ if(!Number.isFinite(manualNum)){alert("N° Facture invalide.");return;}
+ D.invoiceNext=manualNum+1; save();
+ let p=ym.split("-"),y=+p[0],mm=+p[1],m=mm-1,ht=0,rows="";
+ c.h.forEach(h=>{
+   let a=[],n=new Date(y,m+1,0).getDate();
+   for(let d=1;d<=n;d++)if(h.d[y+"-"+m+"-"+d])a.push(d);
+   if(!a.length)return;
+   let r=+h.rate||0,t=a.length*r;ht+=t;
+   let ds=a.map(d=>String(d).padStart(2,"0")+"/"+String(mm).padStart(2,"0")+"/"+y).join("<br>");
+   rows+='<tr><td>ART0001</td><td>performance batterie:<br>'+esc(h.name)+'</td><td>'+a.length+'</td><td>'+ds+'</td><td>'+r.toFixed(3).replace(".",",")+'</td><td>0</td><td>0,000</td><td>'+t.toFixed(3).replace(".",",")+'</td><td>19%</td></tr>';
+ });
+ let tva=ht*.19,net=ht+tva+1,fd=dt?dt.split("-").reverse().join("/"):"",monthName=new Date(y,m,1).toLocaleDateString("fr-FR",{month:"long",year:"numeric"});
+ let addr=c.address?'<br>'+esc(c.address):'',phone=c.phone?'<br>Tél : '+esc(c.phone):'';
+ A.innerHTML='<button class="small noPrint" onclick="invSettings()">← Retour</button>'+
+ '<div class="invoice">'+
+ '<div class="invTop"><div class="invCompany"><strong>SENDI ALAEDDIN</strong><br>DJERBA<br>4180 TUNISIE<br>Tél : 25702705<br>SIRET : 1975872V</div>'+
+ '<div class="invBox"><table><tr><th>N°</th><th>Date</th><th>Client</th></tr><tr><td>'+esc(no)+'</td><td>'+fd+'</td><td>'+esc(c.code)+'</td></tr></table></div></div>'+
+ '<div class="clientBox"><span>Client</span><b>'+esc(c.name)+'</b><br>SIRET : '+esc(c.siret||'')+addr+(c.phone?phone:'')+'</div>'+
+ '<table class="invTable"><tr><th>Référence</th><th>Désignation</th><th>Quantité</th><th>Date</th><th>P.U. HT</th><th>% REM</th><th>Remise HT</th><th>Montant HT</th><th>TVA</th></tr>'+rows+'</table>'+
+ '<div class="invBottom"><div><table class="vatTable"><tr><th>Code</th><th>Base HT</th><th>Taux TVA</th><th>Montant TVA</th></tr><tr><td>'+c.h.filter(h=>datesForMonth(h,y,m).length).length+'</td><td>'+ht.toFixed(3).replace(".",",")+'</td><td>19%</td><td>'+tva.toFixed(3).replace(".",",")+'</td></tr></table><div class="signature">Cachet & signature</div></div>'+
+ '<div class="invTotal"><div><span>Total HT</span><b>'+ht.toFixed(3).replace(".",",")+'</b></div><div><span>Net HT</span><b>'+ht.toFixed(3).replace(".",",")+'</b></div><div><span>Total TVA</span><b>'+tva.toFixed(3).replace(".",",")+'</b></div><div><span>Timbre</span><b>1,000</b></div><div><span>Total</span><b>'+net.toFixed(3).replace(".",",")+'</b></div><div class="net"><span>NET A PAYER</span><b>'+net.toFixed(3).replace(".",",")+' DT</b></div></div></div>'+
+ '</div><button class="btn noPrint" onclick="window.print()">📄 Enregistrer en PDF</button>';
+ D.invoiceNext=(D.invoiceNext||6)+1;save();
+}
+function invoiceHistory(){
+ let arr=Array.isArray(D.invoices)?D.invoices:[];
+ let rows=arr.slice().reverse().map(x=>'<tr><td>'+esc(x.no)+'</td><td>'+esc(x.date||"")+'</td><td>'+esc(x.client||"")+'</td><td>'+esc(x.month||"")+'</td><td>'+Number(x.total||0).toFixed(3).replace(".",",")+' DT</td></tr>').join("");
+ A.innerHTML='<button class="small" onclick="home()">← Retour</button><h2>🧾 Historique des factures</h2>'+
+ (rows?'<div class="box" style="overflow:auto"><table class="invTable"><tr><th>N° Facture</th><th>Date</th><th>Client</th><th>Mois</th><th>Total</th></tr>'+rows+'</table></div>':'<div class="box">Aucune facture enregistrée.</div>');
+}
+function exportData(){
+ let blob=new Blob([JSON.stringify(D,null,2)],{type:"application/json"});
+ let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Hotel_Agenda_Backup.json";a.click();URL.revokeObjectURL(a.href);
+}
+function importData(){
+ let inp=document.createElement("input");inp.type="file";inp.accept=".json,application/json";
+ inp.onchange=()=>{
+   let f=inp.files[0];if(!f)return;
+   let r=new FileReader();
+   r.onload=()=>{
+     try{
+       let x=JSON.parse(r.result);
+       if(!x||!Array.isArray(x.clients))throw new Error();
+       if(!confirm("Remplacer les données actuelles par ce backup ?"))return;
+       D=x;if(typeof D.invoiceNext!=="number"||D.invoiceNext<6)D.invoiceNext=6;
+       if(!Array.isArray(D.invoices))D.invoices=[];
+       D.clients.forEach(c=>{if(typeof c.siret!=="string")c.siret=""});
+       save();home();
+     }catch(e){alert("Backup invalide.");}
+   };
+   r.readAsText(f);
+ };
+ inp.click();
+}
+function datesForMonth(h,y,m){let a=[],n=new Date(y,m+1,0).getDate();for(let d=1;d<=n;d++)if(h.d[y+"-"+m+"-"+d])a.push(d);return a}
+
+home();
+</script></main></body></html>
